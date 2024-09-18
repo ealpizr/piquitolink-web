@@ -1,12 +1,92 @@
-<body>
-  <script src="https://unpkg.com/mithril/mithril.js"></script>
-  <script>
-    var root = document.body;
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PiquitoLink</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/mithril/mithril.js"></script>
+    <script type="module">
+      const root = document.body;
 
-    m.mount(root, {
-      view: function () {
-        return m("h1", "Hello World!");
-      },
-    });
-  </script>
-</body>
+      m.mount(root, {
+        view: function () {
+          return m("main", [
+            m("h1", "PiquitoLink"),
+            m("p", "¡Este es la primera página de PiquitoLink!"),
+            m(
+              "button",
+              {
+                onclick: function () {
+                  m.request({
+                    method: "GET",
+                    url: "https://piquitolink.shuttleapp.rs/",
+                  })
+                    .then(function (response) {
+                      Swal.fire({
+                        title: "¡Exito!",
+                        html:
+                          'Comunicación exitosa con el API<br><pre align="left">' +
+                          JSON.stringify(response, null, 2) +
+                          "</pre>",
+                        icon: "success",
+                        confirmButtonText: "Cerrar",
+                        confirmButtonColor: "#007bff",
+                      });
+                    })
+                    .catch(function (error) {
+                      console.error(error);
+                      Swal.fire({
+                        title: "¡Error!",
+                        html: "Error al comunicarse con el API<br>:(",
+                        icon: "error",
+                        confirmButtonText: "Cerrar",
+                        confirmButtonColor: "#007bff",
+                      });
+                    });
+                },
+              },
+              "¡Llamar al API!"
+            ),
+          ]);
+        },
+      });
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        margin-top: 1rem;
+        font-size: 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body></body>
+</html>
